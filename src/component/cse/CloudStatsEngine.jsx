@@ -1,13 +1,6 @@
 import React, {Component} from 'react'
 import ApiService from "../../service/ApiService";
 
-function markIgnored(input) {
-        if (input === "-999.25") {
-            return input + " (ignored)"
-        }  else {
-            return input
-        }
-}
 
 class CloudStatsEngine extends Component {
 
@@ -27,7 +20,31 @@ class CloudStatsEngine extends Component {
     }
 
     componentDidMount() {
-       // todo load some default CSV
+        ApiService.getDefaultData(this.state.percentile)
+            .then(res => {
+                console.log(res.data);
+                this.updateView(res);
+            })
+    }
+
+    markIgnored(input) {
+        if (input === "-999.25") {
+            return input + " (ignored)"
+        }  else {
+            return input
+        }
+    }
+
+    updateView(res) {
+        this.setState({
+            guavaDepth: res.data.guavaCalculatedPercentile.depth,
+            guavaGammaRay: res.data.guavaCalculatedPercentile.gammaRay,
+            guavaRhob: res.data.guavaCalculatedPercentile.rhob,
+            apacheDepth: res.data.apacheCalculatedPercentile.depth,
+            apacheGammaRay: res.data.apacheCalculatedPercentile.gammaRay,
+            apacheRhob: res.data.apacheCalculatedPercentile.rhob,
+            originalInput: res.data.originalInput
+        });
     }
 
     uploadFile() {
@@ -44,16 +61,7 @@ class CloudStatsEngine extends Component {
         ApiService.upload(formData, this.state.percentile)
             .then(res => {
                 console.log(res.data);
-
-                this.setState({
-                    guavaDepth: res.data.guavaCalculatedPercentile.depth,
-                    guavaGammaRay: res.data.guavaCalculatedPercentile.gammaRay,
-                    guavaRhob: res.data.guavaCalculatedPercentile.rhob,
-                    apacheDepth: res.data.apacheCalculatedPercentile.depth,
-                    apacheGammaRay: res.data.apacheCalculatedPercentile.gammaRay,
-                    apacheRhob: res.data.apacheCalculatedPercentile.rhob,
-                    originalInput: res.data.originalInput
-                });
+                this.updateView(res);
             })
     }
 
@@ -149,9 +157,9 @@ class CloudStatsEngine extends Component {
                         this.state.originalInput.map(
                             geometricModel =>
                                 <tr key={geometricModel.depth}>
-                                    <td>{markIgnored(geometricModel.depth)}</td>
-                                    <td>{markIgnored(geometricModel.gammaRay)}</td>
-                                    <td>{markIgnored(geometricModel.rhob)}</td>
+                                    <td>{this.markIgnored(geometricModel.depth)}</td>
+                                    <td>{this.markIgnored(geometricModel.gammaRay)}</td>
+                                    <td>{this.markIgnored(geometricModel.rhob)}</td>
                                 </tr>
                         )
                     }
