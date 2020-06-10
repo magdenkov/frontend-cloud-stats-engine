@@ -27,7 +27,7 @@ class CloudStatsEngine extends Component {
             })
     }
 
-    markIgnored(input) {
+    static markIgnored(input) {
         if (input === "-999.25") {
             return input + " (ignored)"
         }  else {
@@ -157,9 +157,9 @@ class CloudStatsEngine extends Component {
                         this.state.originalInput.map(
                             geometricModel =>
                                 <tr key={geometricModel.depth}>
-                                    <td>{this.markIgnored(geometricModel.depth)}</td>
-                                    <td>{this.markIgnored(geometricModel.gammaRay)}</td>
-                                    <td>{this.markIgnored(geometricModel.rhob)}</td>
+                                    <td>{CloudStatsEngine.markIgnored(geometricModel.depth)}</td>
+                                    <td>{CloudStatsEngine.markIgnored(geometricModel.gammaRay)}</td>
+                                    <td>{CloudStatsEngine.markIgnored(geometricModel.rhob)}</td>
                                 </tr>
                         )
                     }
