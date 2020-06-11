@@ -1,5 +1,10 @@
-To view the app go to
+Demo can be viewed 
 https://fe-cloud-stats.wl.r.appspot.com/  
+
+You can use that CSV file for testing:
+
+https://github.com/magdenkov/backend-cloud-stats-engine/blob/master/testdata.csv
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
